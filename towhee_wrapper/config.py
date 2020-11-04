@@ -1,4 +1,4 @@
-def set_input_format(self, format='Towhee'):
+def set_inputformat(self, format='Towhee'):
     """Set input format
 
     'Towhee' : (default) read the input parameters following the format for
@@ -8,7 +8,7 @@ def set_input_format(self, format='Towhee'):
     """
     supported = ['Towhee', 'LAMMPS']
     if format in supported:
-        self.input_format = format
+        self.inputformat = format
     else:
         raise NotImplementedError(f"Format {format} is not supported")
 
