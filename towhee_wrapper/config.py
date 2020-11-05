@@ -8,7 +8,7 @@ def set_inputformat(self, format='Towhee'):
     """
     supported = ['Towhee', 'LAMMPS']
     if format in supported:
-        self.inputformat = format
+        self.parameters["inputformat"].set(format)
     else:
         raise NotImplementedError(f"Format {format} is not supported")
 
@@ -41,7 +41,7 @@ def set_rng(self, rng='DX-1597-2-7', luxlevel=3):
     """
     supported = ['DX-1597-2-7', 'KISS99', 'MRG32k3a', 'RANLUX']
     if rng in supported:
-        self.rng = rng
+        self.parameters.set(rng)
     else:
         raise NotImplementedError(
             f"Random number generator {rng} is not implemented")
@@ -54,7 +54,7 @@ def set_seed(self, seed=1302002):
     psuedorandom number generator (unless performing a restart when
     random_allow_restart is .TRUE.). Must be positive.
     """
-    self.seed = int(seed)
+    self.parameters["random_seed"].set(seed)
 
 
 def allow_restart(self, restart=True):
@@ -68,32 +68,32 @@ def allow_restart(self, restart=True):
     random_seed.
     False: initialize the pseudorandom number generator using the random_seed.
     """
-    self.restart = bool(restart)
+    self.parameters["random_allow_restart"].set(restart)
 
 
 def set_pressure(self, pressure):
     """Set external pressure, given in kPa. Only relevant if ensemble
     is set to 'npt'.
     """
-    if self.ensemble is not 'npt':
+    if self.parameters["ensemble"].value is not 'npt':
         raise UserWarning("Pressure will not be held constant in this ensemble")
-    self.pressure = float(pressure)
+    self.parameters["pressure"].set(pressure)
 
 
 def set_chempot(self, chempot):
     """Set chemical potential, given in K. Only relevant if ensemble
     is set to 'uvt'.
     """
-    if self.ensemble is not 'uvt':
+    if self.parameters["ensemble"].value is not 'uvt':
         raise UserWarning("Chemical potential will not be held constant in this ensemble")
-    self.chempot = float(chempot)
+    self.parameters["chempot"].set(chempot)
 
 
-def_set_maxmol(self, maxmol):
+def set_maxmol(self, maxmol):
     """Set maximum number of molecules in the system. By default,
     this is set to the initial number of molecules.
     """
-    self.maxmol = maxmol
+    self.parameters["nmolectyp"].set(maxmol)
 
 
 def add_box(self, initboxtype):
@@ -105,11 +105,11 @@ def add_box(self, initboxtype):
 def set_stepstyle(self, stepstyle='cycles'):
     """Set step style
 
-    'cycles' : (default) run a Monte Carlo simulation for nstep Monte Carlo
+    'cycles': (default) run a Monte Carlo simulation for nstep Monte Carlo
     cycles. A cycle is equal to N Monte Carlo moves, where N is the total
     possible number of molecules in this simulation (the sum of the
     nmolectyp values).
-    'moves' : run a Monte Carlo simulation for nstep Monte Carlo moves.
+    'moves': run a Monte Carlo simulation for nstep Monte Carlo moves.
     """
     supported = ['cycles', 'moves']
     if stepstyle in supported:

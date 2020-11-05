@@ -1,24 +1,24 @@
 import os
 import shutil
-from .io import read
+from parameter import parameters
 
 
 class Towhee:
-    def __init__(self, ensemble, temperature):
+    def __init__(self, ensemble, temperature, nstep):
 
-        # from .default import keywords, default_parameters
-        from .parameter import Parameter
-        from .io import write, write_parallel
-        from .config import *
+        self.parameters = parameters
+        self.parameters["ensemble"].set(ensemble)
+        self.parameters["temperature"].set(temperature)
+        self.parameters["nstep"].set(nstep)
 
-        self.ensemble = ensemble
-        self.temperature = temperature
         self.boxes = []
         self.wd = ""
 
-        self.keywords = keywords
-        self.default_parameters = default_parameters
-        self.parameters = default_parameters
+    # import
+    from file_handling import read, write_input, write_parallel
+
+    def set(self, keyword, value):
+        self.parameters[keyword].set(value)
 
     def set_working_directory(self, wd, overwrite=False):
         self.wd = wd
@@ -56,3 +56,9 @@ class Towhee:
         """
         self.write()
         self.write_parallel()
+
+
+if __name__ == "__main__":
+    towhee = Towhee('nvt', 300.0, 100)
+    towhee.set("random_luxlevel", 2)
+    towhee.write_input()
