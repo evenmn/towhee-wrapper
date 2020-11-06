@@ -1,5 +1,6 @@
 import os
 import shutil
+import subprocess
 from parameter import parameters
 
 
@@ -51,14 +52,18 @@ class Towhee:
             head, tail = os.path.split(file)
             shutil.copyfile(file, self.wd + tail)
 
-    def run(self, num_procs, towhee_exec='towhee'):
+    def run(self, towhee_exec='towhee', num_procs=None):
         """Run
         """
         self.write()
-        self.write_parallel()
+
+        if num_procs is not None:
+            self.write_parallel(num_procs)
+
+        subprocess.Popen(['towhee', 'towhee_input'])
 
 
 if __name__ == "__main__":
     towhee = Towhee('nvt', 300.0, 100)
     towhee.set("random_luxlevel", 2)
-    towhee.write_input()
+    towhee.write()

@@ -1,7 +1,7 @@
 import os
 
 
-@staticmethod
+# @staticmethod
 def read(filename='towhee_input'):
     # from __init__ import Towhee
 
@@ -12,8 +12,8 @@ def read(filename='towhee_input'):
                 # keyword line
                 if 'keyword' in locals():
                     parameters[keyword] = parameter
-                parameter = ""
                 keyword = line.split()[0]
+                parameter = ""
                 print(keyword)
             else:
                 # parameter line
@@ -36,7 +36,7 @@ def rec_write(f, parameters):
             rec_write(f, obj.subparameters)
 
 
-def write_input(self, filename='towhee_input'):
+def write(self, filename='towhee_input'):
     """Write Towhee input script
     """
     filepath = os.path.join(self.wd, filename)
